@@ -15,20 +15,21 @@ def administrative_popup(employee_name, array_of_hours):
     root.wm_title("Hourly Work Percentages Breakdown of " + employee_name)
     fig = Figure(figsize=(5,5), dpi=100)
     a = fig.add_subplot(111)
-    a.plot(["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm","4pm", "5pm"],[0,15,15,15,5,0,45,5,0])
-
+    a.plot(["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm","4pm", "5pm"],array_of_hours)
+    #Placing some axis labels
     a.set_ylabel('Percentage Makeup of the Days Productivity')
     a.set_xlabel('Hour')
-    canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
+    canvas = FigureCanvasTkAgg(fig, master=root) #tying it to a canvas
 
     canvas.draw()
     # pack_toolbar=False will make it easier to use a layout manager later on.
     toolbar = NavigationToolbar2Tk(canvas, root, pack_toolbar=False)
     toolbar.update()
+    #bellow im just getting the connecter all set up so the mouse can look and interact with the jazz in the popup
     canvas.mpl_connect(
     "key_press_event", lambda event: print(f"you pressed {event.key}"))
     canvas.mpl_connect("key_press_event", key_press_handler)
-    button = tkinter.Button(master=root, text="Quit", command=root.quit)
+    button = tkinter.Button(master=root, text="Escape", command=root.quit) #basically just an x out button
     button.pack(side=tkinter.BOTTOM)
     toolbar.pack(side=tkinter.BOTTOM, fill=tkinter.X)
     canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
@@ -44,17 +45,17 @@ def hourly_popup(title, message, path):
     sh = root.winfo_screenheight()
     x = (sw - w)/2
     y = (sh - h)/2
-    root.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    root.geometry('%dx%d+%d+%d' % (w, h, x, y)) #more relative window calculations
     m = message
     m += '\n'
-    m += path
+    m += path #more message formatting and jazz
     w = Label(root, text=m, width=120, height=10)
     w.pack()
     b = Button(root, text="OK", command=root.destroy, width=10)
     b.pack()
     mainloop()
 # Examples
-administrative_popup("Karen McKarenFace", [10])
-#hourly_popup("Hourly Report", "You got this\n", "JK lol you gunna fail bitch")
+administrative_popup("Karen McKarenFace", [10,10,10,10,20,10,10,10,10])
+hourly_popup("Hourly Report", "You got this\n", "JK lol you gunna fail bitch")
 
 
