@@ -38,21 +38,19 @@ def osx():
     else:  # Child process waits to update database every minute
         while True:
 
-            if datetime.now().second % 9 == 0:
-                time.sleep(.1)
+            if datetime.now().second % 11 == 0:
                 temp = database.get_counter()['c']
-                print(temp)
                 temp += count.value
+                print("Running total: " + str(temp))
                 database.update_counter(temp)
-                time.sleep(.15)
+                count.value = 0
+                time.sleep(1)
 
-
-            if datetime.now().second % 60 == 0:
-                time.sleep(.1)
+            if datetime.now().second % 61 == 0:
                 mac_hourly = count.value
-                print("now this: " + str(count.value))
                 total = database.get_counter()['c']
                 total += mac_hourly
+                print("now this: " + str(total))
                 if user[hour] == 1:
                     user[hour] = mac_hourly / total * 100
                 elif total == 0:
@@ -91,9 +89,11 @@ def win_helper(cnt, unused):
     while True:
         if datetime.now().second % 9 == 0:
             temp = database.get_counter()['c']
-            temp += count.value
+            temp += cnt.value
+            print("Rolling Total: " + str(temp))
             database.update_counter(temp)
-            time.sleep(.15)
+            cnt.value = 0
+            time.sleep(1)
 
         if datetime.now().second % 60 == 0:
             win_hourly = cnt.value
