@@ -8,10 +8,15 @@ from datetime import datetime
 from multiprocessing import Value, set_start_method, Process, Queue
 
 
-#count = Value('i', 0)  # Create a global Value object to track key presses across parent and child
+c = Value('i', 0)  # Create a global Value object to track key presses across parent and child
 user = [1, 1, 1, 1, 1, 1, 1, 1]
 count = 0
 hour = 0
+
+
+def won_press(key):
+    c.value += 1
+    print(c.value)
 
 
 def on_press(key):  # Behavior at key press event
@@ -86,21 +91,19 @@ def mac_helper():
 
 
 def windows():
-    global count
+    global c
 
     #multiprocessing.set_start_method('forkserver', force=True)
-    p = multiprocessing.Process(target=win_helper, args=[count, ])
+    p = multiprocessing.Process(target=win_helper, args=[c, ])
     p.daemon = True
     p.start()
-    with Listener(on_press=on_press) as win_listener:
+    with Listener(on_press=won_press) as win_listener:
         win_listener.join()
 
 
 def win_helper(cnt):
     global hour
     global user
-    global count
-
 
     name = os.getlogin()
     dic = database.get_worker(name)
@@ -131,6 +134,9 @@ def win_helper(cnt):
 
             algo.decision(prev, user[hour], hour)
 
+            print(user)
+            print(hour)
+
             if hour == 7:
                 hour = 0
             else:
@@ -148,10 +154,10 @@ if __name__ == '__main__':
     # for i in range(0, 9):
     #     print(i)
     #     algo.decision(1, .5, i)
-    # system = sys.platform
-    # if system == "darwin":
-    #     osx()
-    # elif system == "win32":
-    #     windows()
-    osx()
+    system = sys.platform
+    if system == "darwin":
+        osx()
+    elif system == "win32":
+        windows()
+
 

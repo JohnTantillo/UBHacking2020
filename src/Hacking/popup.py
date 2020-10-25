@@ -10,7 +10,6 @@ from matplotlib.figure import Figure
 import numpy as np
 
 
-
 def administrative_popup(employee_name, array_of_hours):
     root = tkinter.Tk()
     root.wm_title("Hourly Work Percentages Breakdown of " + employee_name)
