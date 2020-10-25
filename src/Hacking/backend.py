@@ -2,11 +2,11 @@ import time
 import os
 import sys
 import multiprocessing
-from Hacking import database
+import database
 from pynput.keyboard import Listener
 from datetime import datetime
 from multiprocessing import Value
-from Frontend import popup
+import popup
 
 
 count = Value('i', 0)  # Create a global Value object to track key presses across parent and child
