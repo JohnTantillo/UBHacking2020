@@ -47,7 +47,6 @@ def mac_helper():
     dic = database.get_worker(name)
     user = dic['data']
     last = 0
-
     while True:
         if datetime.now().second % 10 == 0:
             temp = database.get_counter()['c']
@@ -109,6 +108,8 @@ def win_helper(cnt):
     dic = database.get_worker(name)
     user = dic['data']
     last = 0
+    algo.decision(1,.5,3)
+
     while True:
 
         if datetime.now().second % 9 == 0:
