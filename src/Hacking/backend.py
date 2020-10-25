@@ -3,10 +3,9 @@ import os
 import json
 import sys
 import multiprocessing
-from pymongo import MongoClient
 from pynput.keyboard import Listener
 from datetime import datetime
-from multiprocessing import Value, Lock
+from multiprocessing import Value
 
 count = Value('i', 0)  # Create a global Value object to track key presses across parent and child
 user = [1, 1, 1, 1, 1, 1, 1, 1]
@@ -16,6 +15,11 @@ hour = 0
 
 def on_press(key):  # Behavior at key press event
     count.value += 1
+
+
+def won_press(key):  # Behavior at key press event
+    count.value += 1
+    print(count.value)
 
 
 def response_handler():
@@ -59,16 +63,26 @@ def windows():
     global hour
     name = os.getlogin()
     dic = {"name": name, "data": user}
-    p = multiprocessing.Process(target=win_helper)
+    p = multiprocessing.Process(target=win_helper, args=(count, count.value))
     p.daemon = True
     p.start()
+    with Listener(on_press=won_press) as win_listener:
+        win_listener.join()
+            # Add count to to total for current hour
+            # Divide count by total for current hour and add that to user entry for this hour
+            # Update hour & reset count to 0
+            # If it's the end of the day, clear daily totals
+
+
+def win_helper(cnt, unused):
+    global hour
     while True:
         if datetime.now().second % 9 == 0:
-            total[hour] += count.value
+            total[hour] += cnt.value
             time.sleep(.5)
-        if datetime.now().second % 60 == 0:
-            win_hourly = count.value
-            print(win_hourly)
+        if datetime.now().second % 60:
+            win_hourly = cnt.value
+            print("now this: " + str(cnt.value))
             total[hour] += win_hourly
             if user[hour] == 1:
                 user[hour] = win_hourly / total[hour] * 100
@@ -78,18 +92,8 @@ def windows():
                 hour = 0
             else:
                 hour += 1
-            count.value = 0
+            cnt.value = 0
             time.sleep(1)
-            # Add count to to total for current hour
-            # Divide count by total for current hour and add that to user entry for this hour
-            # Update hour & reset count to 0
-            # If it's the end of the day, clear daily totals
-
-
-def win_helper():
-    with Listener(on_press=on_press) as win_listener:
-        print("key pressed")
-        win_listener.join()
 
 
 if __name__ == '__main__':
