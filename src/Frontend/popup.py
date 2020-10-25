@@ -1,4 +1,5 @@
 import tkinter
+import webbrowser
 from tkinter import *
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -34,6 +35,9 @@ def administrative_popup(employee_name, array_of_hours):
     canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
     tkinter.mainloop()
 
+def callback(url):
+    webbrowser.open_new(url)
+
 def hourly_popup(title, message, path):
     """Generate a pop-up window for special messages."""
     root = Tk()
@@ -45,14 +49,21 @@ def hourly_popup(title, message, path):
     x = (sw - w)/2
     y = (sh - h)/2
     root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    m = message
-    m += '\n'
-    m += path
-    w = Label(root, text=m, width=120, height=10)
-    w.pack()
-    b = Button(root, text="OK", command=root.destroy, width=10)
-    b.pack()
+    if(path == "survey"):
+        link2 = Label(root, text="Comments About Today?", fg="blue", cursor="hand2")
+        link2.pack()
+        link2.bind("<Button-1>", lambda e: callback("https://forms.gle/4U3zj3wGVwtXkHNw5"))
+        b = Button(root, text="Nope See You Tomorrow!", command=root.destroy, width=10)
+        b.pack()
+    else:
+        m = message
+        m += '\n'
+        m += path
+        w = Label(root, text=m, width=120, height=10)
+        w.pack()
+        b = Button(root, text="OK", command=root.destroy, width=10)
+        b.pack()
     mainloop()
 # Examples
-administrative_popup("Karen McKarenFace", [10])
-#hourly_popup("Hourly Report", "You got this\n", "JK lol you gunna fail bitch")
+#hourly_popup("Mental Health Report", "Seems Like You're Hitting A Rough Patch Go take a Break", "You're Doing Great - Josh")
+#hourly_popup("End of Day!", "See ya Tomorrow, Got any questions", "survey")
