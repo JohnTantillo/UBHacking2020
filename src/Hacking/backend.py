@@ -2,11 +2,11 @@ import time
 import os
 import sys
 import multiprocessing
-import database
+from Hacking import database
 from pynput.keyboard import Listener
 from datetime import datetime
 from multiprocessing import Value
-import popup
+from Hacking import popup
 
 
 count = Value('i', 0)  # Create a global Value object to track key presses across parent and child
@@ -39,18 +39,24 @@ def osx():
         while True:
 
             if datetime.now().second % 9 == 0:
+                time.sleep(.1)
                 temp = database.get_counter()['c']
+                print(temp)
                 temp += count.value
                 database.update_counter(temp)
-                time.sleep(.5)
+                time.sleep(.15)
+
 
             if datetime.now().second % 60 == 0:
+                time.sleep(.1)
                 mac_hourly = count.value
                 print("now this: " + str(count.value))
                 total = database.get_counter()['c']
                 total += mac_hourly
                 if user[hour] == 1:
                     user[hour] = mac_hourly / total * 100
+                elif total == 0:
+                    user[hour] = user[hour]/2
                 else:
                     user[hour] = ((mac_hourly / total * 100) + user[hour]) / 2
                 if hour == 7:
@@ -85,20 +91,21 @@ def win_helper(cnt, unused):
     while True:
         if datetime.now().second % 9 == 0:
             temp = database.get_counter()['c']
-            print(temp)
             temp += count.value
             database.update_counter(temp)
-            time.sleep(.5)
+            time.sleep(.15)
 
-        if datetime.now().second % 60:
+        if datetime.now().second % 60 == 0:
             win_hourly = cnt.value
             print("now this: " + str(cnt.value))
             total = database.get_counter()['c']
             total += win_hourly
             if user[hour] == 1:
-                user[hour] = win_hourly / total[hour] * 100
+                user[hour] = win_hourly / total * 100
+            elif total == 0:
+                user[hour] = user[hour]/2
             else:
-                user[hour] = ((win_hourly / total[hour] * 100) + user[hour]) / 2
+                user[hour] = ((win_hourly / total * 100) + user[hour]) / 2
             if hour == 7:
                 hour = 0
             else:

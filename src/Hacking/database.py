@@ -13,7 +13,7 @@ if prod.count_documents({}) == 0:
 
 # adds counter variable
 if prod.find_one({'name': 'counter'}) == None:
-   prod.insert_one({'name': 'counter', 'c': 0})
+    prod.insert_one({'name': 'counter', 'c': 0})
 
 
 # updates counter
@@ -23,7 +23,8 @@ def update_counter (newc):
 
 # returns current counter
 def get_counter():
-    return prod.find_one({'name': 'counter'})
+    ret = prod.find_one({'name': 'counter'})
+    return {'name': ret['name'], 'c': ret['c']}
 
 
 # adds specified worker to database using {name: '', data: []} json string as input
