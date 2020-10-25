@@ -5,35 +5,47 @@ client = MongoClient("mongodb+srv://hack:Passw0rd@cluster0.gu6ke.mongodb.net/tes
 db = client.get_database('WorkersDay_db')
 prod = db.Productivity
 
-#adds worker random worker if database is empty
+
+# adds worker random worker if database is empty
 if prod.count_documents({}) == 0:
     prod.insert_one({'name': "PlaceHolder", 'data': [1,1,1,1,1,1,1,1]})
 
-#adds counter variable
+
+# adds counter variable
 if prod.find_one({'name': 'counter'}) == None:
    prod.insert_one({'name': 'counter', 'c': 0})
 
-#updates counter
+
+# updates counter
 def update_counter (newc):
     prod.update_one({'name': 'counter'}, {'$set': {'c': newc}})
 
-#adds specified worker to database using {name: '', data: []} json string as input
+
+# returns current counter
+def get_counter():
+    return prod.find_one({'name': 'counter'})
+
+
+# adds specified worker to database using {name: '', data: []} json string as input
 def add_worker (w):
     prod.insert_one(w)
 
-#updates specified worker data array in database using {name: '', data: []} json string as input
+
+# updates specified worker data array in database using {name: '', data: []} json string as input
 def update_worker (w):
     arr = {'data': w['data']}
     prod.update_one({'name': w['name']}, {'$set': arr})
 
-#returns specified worker data json string in this format {'name': '', 'data': []}
+
+# returns specified worker data json string in this format {'name': '', 'data': []}
 def get_worker (w):
     ret = prod.find_one({'name': w['name']})
     return {'name': ret['name'], 'data': ret['data']}
 
-#deletes a worker from the database
+
+# deletes a worker from the database
 def delete_worker(w):
     prod.delete_one({'name': w['name']})
 
 
-#{name: '', data: []}
+# {name: '', data: []}
