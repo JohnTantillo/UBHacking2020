@@ -2,6 +2,9 @@ breakTaken = False
 warnCounter = 0
 
 def decision(prev, current, hour):
+    global breakTaken
+    global warnCounter
+
     delta = abs(prev-current)
     warning = 0.25 * prev
     breakWarn = 0.10 * prev
