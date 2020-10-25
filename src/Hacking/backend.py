@@ -29,8 +29,8 @@ def osx():
 
     n = os.fork()  # Fork into parent and child process
     name = os.getlogin()
-    dic = {"name": name, "data": user}
-    user = database.get_worker(dic)['data']
+    dic = database.get_worker(name)
+    user = dic['data']
 
     if n > 0:  # Parent process listens for keyboard events
         with Listener(on_press=on_press) as mac_listener:
@@ -83,8 +83,8 @@ def win_helper(cnt, unused):
     global user
 
     name = os.getlogin()
-    dic = {"name": name, "data": user}
-    user = database.get_worker(dic)['data']
+    dic = database.get_worker(name)
+    user = dic['data']
 
     while True:
         if datetime.now().second % 9 == 0:
