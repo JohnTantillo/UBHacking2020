@@ -1,21 +1,5 @@
 breakTaken = False
 warnCounter = 0
-percentages = {
-    "9a": 0,
-    "10a": 0,
-    "11a": 0,
-    "12p": 0,
-    "1p": 0,
-    "2p": 0,
-    "3p": 0,
-    "4p": 0,
-    "5p": 0
-}
-
-def initData():
-    for hour in percentages:
-        #pull data from database
-        continue
 
 def decision(prev, current, hour):
     delta = abs(prev-current)
@@ -26,7 +10,7 @@ def decision(prev, current, hour):
         breakTaken = True
         # TODO: Send Break
         print("break time")
-    
+
     if delta >= warning:
         warnCounter = warnCounter + 1
 

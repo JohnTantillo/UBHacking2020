@@ -56,5 +56,3 @@ def hourly_popup(title, message, path):
 # Examples
 administrative_popup("Karen McKarenFace", [10])
 #hourly_popup("Hourly Report", "You got this\n", "JK lol you gunna fail bitch")
-
-
