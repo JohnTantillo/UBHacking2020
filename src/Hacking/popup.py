@@ -66,4 +66,4 @@ def hourly_popup(title, message, path):
     mainloop()
 # Examples
 #hourly_popup("Mental Health Report", "Seems Like You're Hitting A Rough Patch Go take a Break", "You're Doing Great - Josh")
-hourly_popup("You Doing Alright?", "Could you fill out this form? We just wanna check in with you.", "survey")
+# hourly_popup("You Doing Alright?", "Could you fill out this form? We just wanna check in with you.", "survey")
