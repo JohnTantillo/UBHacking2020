@@ -15,7 +15,8 @@ def administrative_popup(employee_name, array_of_hours):
     root.wm_title("Hourly Work Percentages Breakdown of " + employee_name)
     fig = Figure(figsize=(5,5), dpi=100)
     a = fig.add_subplot(111)
-    a.plot(["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm","4pm", "5pm"],[0,15,15,15,5,0,45,5,0])
+   #print(array_of_hours["data"])
+    a.plot(["9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm","4pm"],array_of_hours["data"])
 
     a.set_ylabel('Percentage Makeup of the Days Productivity')
     a.set_xlabel('Hour')
@@ -47,14 +48,14 @@ def hourly_popup(title, message, path):
     sh = root.winfo_screenheight()
     x = (sw - w)/2
     y = (sh - h)/2
-    root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    if(path == "survey"):
+    root.geometry('%dx%d+%d+%d' % (w, h, x, y)) #basic layout of the window
+    if(path == "survey"): #for the survey popup with the forum
         link2 = Label(root, text="\n\n" + message + "\n\n\n\n\n", fg="blue", cursor="hand2")
         link2.pack()
         link2.bind("<Button-1>", lambda e: callback("https://forms.gle/4U3zj3wGVwtXkHNw5"))
         b = Button(root, text="See you tomorrow!", command=root.destroy, width=25)
         b.pack()
-    else:
+    else:#layout of Generic text message you can see some examples bellow.
         m = message
         m += '\n'
         m += path
@@ -63,6 +64,6 @@ def hourly_popup(title, message, path):
         b = Button(root, text="OK", command=root.destroy, width=10)
         b.pack()
     mainloop()
-# Examples
+#Examples
 #hourly_popup("Mental Health Report", "Seems Like You're Hitting A Rough Patch Go take a Break", "You're Doing Great - Josh")
-# hourly_popup("You Doing Alright?", "Could you fill out this form? We just wanna check in with you.", "survey")
+#hourly_popup("You Doing Alright?", "Could you fill out this form? We just wanna check in with you.", "survey")
