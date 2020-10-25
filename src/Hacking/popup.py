@@ -50,10 +50,10 @@ def hourly_popup(title, message, path):
     y = (sh - h)/2
     root.geometry('%dx%d+%d+%d' % (w, h, x, y))
     if(path == "survey"):
-        link2 = Label(root, text="Comments About Today?", fg="blue", cursor="hand2")
+        link2 = Label(root, text="\n\n" + message + "\n\n\n\n\n", fg="blue", cursor="hand2")
         link2.pack()
         link2.bind("<Button-1>", lambda e: callback("https://forms.gle/4U3zj3wGVwtXkHNw5"))
-        b = Button(root, text="Nope See You Tomorrow!", command=root.destroy, width=10)
+        b = Button(root, text="See you tomorrow!", command=root.destroy, width=25)
         b.pack()
     else:
         m = message
@@ -66,4 +66,4 @@ def hourly_popup(title, message, path):
     mainloop()
 # Examples
 #hourly_popup("Mental Health Report", "Seems Like You're Hitting A Rough Patch Go take a Break", "You're Doing Great - Josh")
-#hourly_popup("End of Day!", "See ya Tomorrow, Got any questions", "survey")
+hourly_popup("You Doing Alright?", "Could you fill out this form? We just wanna check in with you.", "survey")
